@@ -1,0 +1,97 @@
+C51 COMPILER V9.00   MAIN                                                                  06/15/2016 14:40:47 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\list\main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\CH\main.c BROWSE INCDIR(..\CH) DEBUG OBJECTEXTEND PRINT(.\list\main.lst)
+                    - OBJECT(.\list\main.obj)
+
+line level    source
+
+   1          
+   2          /*------------------------------------------------------------------*/
+   3          /* --- STC MCU International Limited -------------------------------*/
+   4          /* --- STC 1T Series MCU RC Demo -----------------------------------*/
+   5          /* --- Mobile: (86)13922805190 -------------------------------------*/
+   6          /* --- Fax: 86-0513-55012956,55012947,55012969 ---------------------*/
+   7          /* --- Tel: 86-0513-55012928,55012929,55012966 ---------------------*/
+   8          /* --- Web: www.GXWMCU.com -----------------------------------------*/
+   9          /* --- QQ:  800003751 ----------------------------------------------*/
+  10          /* If you want to use the program or the program referenced in the  */
+  11          /* article, please specify in which data and procedures from STC    */
+  12          /*------------------------------------------------------------------*/
+  13          
+  14          
+  15          #include        "config.h"
+  16          #include        "USART1.h"
+  17          #include        "delay.h"
+  18          
+  19          
+  20          /*************  功能说明        **************
+  21          
+  22          双串口全双工中断方式收发通讯程序。
+  23          
+  24          通过PC向MCU发送数据, MCU收到后通过串口把收到的数据原样返回.
+  25          
+  26          ******************************************/
+  27          
+  28          /*************  本地常量声明    **************/
+  29          
+  30          
+  31          /*************  本地变量声明    **************/
+  32          
+  33          
+  34          /*************  本地函数声明    **************/
+  35          
+  36          
+  37          
+  38          /*************  外部函数和变量声明 *****************/
+  39          
+  40          
+  41          /*************  串口1初始化函数 *****************/
+  42          
+  43          
+  44          
+  45          /**********************************************/
+  46          void main(void)
+  47          {
+  48   1              u8      i;
+  49   1      
+  50   1              UART_config();
+  51   1              EA = 1;
+  52   1      
+  53   1              while (1)
+  54   1              {
+C51 COMPILER V9.00   MAIN                                                                  06/15/2016 14:40:47 PAGE 2   
+
+  55   2                      delay_ms(1);
+  56   2                      if(COM1.RX_TimeOut > 0)         //超时计数
+  57   2                      {
+  58   3                              if(--COM1.RX_TimeOut == 0)
+  59   3                              {
+  60   4                                      if(COM1.RX_Cnt > 0)
+  61   4                                      {
+  62   5                                              for(i=0; i<COM1.RX_Cnt; i++)    TX1_write2buff(RX1_Buffer[i]);  //收到的数据原样返回
+  63   5                                      }
+  64   4                                      COM1.RX_Cnt = 0;
+  65   4                              }
+  66   3                      }
+  67   2              }
+  68   1      }
+  69          
+  70          
+  71          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     56    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

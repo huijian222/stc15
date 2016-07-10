@@ -1,0 +1,10 @@
+"..\list\ADC.obj",
+"..\list\PCA.obj",
+"..\list\delay.obj",
+"..\list\main.obj",
+"..\list\USART1.obj",
+"..\list\data_transfer.obj",
+"..\list\pid.obj",
+"..\list\timer.obj" 
+TO "..\list\UART1" 
+PRINT(".\list\UART1.m51") RAMSIZE(256) 

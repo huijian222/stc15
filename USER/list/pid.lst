@@ -1,0 +1,66 @@
+C51 COMPILER V9.00   PID                                                                   06/15/2016 16:36:38 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE PID
+OBJECT MODULE PLACED IN ..\list\pid.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\CH\pid.c LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\list\pid.lst) OBJECT(..
+                    -\list\pid.obj)
+
+line level    source
+
+   1          #include "CONFIG.h" 
+   2          PID PID_PID_2;
+   3          extern float adc_P0_0;
+   4          
+   5          void PID_init(){
+   6   1          PID_PID_2.SetSpeed=0.0;
+   7   1          PID_PID_2.ActualSpeed=0.0;          //
+   8   1          PID_PID_2.err=0.0;
+   9   1          PID_PID_2.err_last=0.0;
+  10   1          PID_PID_2.voltage=0.0;
+  11   1          PID_PID_2.integral=0.0;
+  12   1          PID_PID_2.Kp=4;   //200 p:0.07jike 
+  13   1          PID_PID_2.Ki=0;
+  14   1          PID_PID_2.Kd=0.0;
+  15   1      }
+  16          
+  17          float PID_realize(float speed ,float actual){
+  18   1              PID_PID_2.ActualSpeed=actual;      //MaxActual 在pid.h中定义
+  19   1          PID_PID_2.SetSpeed=speed;
+  20   1          PID_PID_2.err=PID_PID_2.SetSpeed-PID_PID_2.ActualSpeed;
+  21   1          if(PID_PID_2.Ki)PID_PID_2.integral += PID_PID_2.err;
+  22   1              if(PID_PID_2.integral > 0.5) PID_PID_2.integral = 0.5;
+  23   1              if(PID_PID_2.integral < -0.5) PID_PID_2.integral = -0.5;
+  24   1          PID_PID_2.voltage=PID_PID_2.Kp*PID_PID_2.err+PID_PID_2.Ki*PID_PID_2.integral+PID_PID_2.Kd*(PID_PID_2.e
+             -rr-PID_PID_2.err_last);
+  25   1          PID_PID_2.err_last=PID_PID_2.err;
+  26   1          PID_PID_2.ActualSpeed=PID_PID_2.voltage*1.0;
+  27   1          return  PID_PID_2.ActualSpeed;
+  28   1      }
+  29          
+  30          float PID_application(float target,float adc){
+  31   1              float PID_num;
+  32   1              PID_num = PID_realize(target,adc);//(target, (float)((adc_P0_0-640)/360) );
+  33   1              if(PID_num > 1){
+  34   2                      PID_num = 1.0;
+  35   2              }
+  36   1              if(PID_num < -1){
+  37   2                      PID_num = -1.0;
+  38   2              }
+  39   1      //      PID_num=(PID_num+1.0)/2.0;
+  40   1              return PID_num;
+  41   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    644    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     36      20
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

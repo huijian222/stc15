@@ -1,0 +1,207 @@
+C51 COMPILER V9.00   DATA_TRANSFER                                                         06/15/2016 16:36:38 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE DATA_TRANSFER
+OBJECT MODULE PLACED IN ..\list\data_transfer.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ..\CH\data_transfer.C LARGE BROWSE DEBUG OBJECTEXTEND PRINT(.\list\data_tra
+                    -nsfer.lst) OBJECT(..\list\data_transfer.obj)
+
+line level    source
+
+   1          #include "data_transfer.h"
+   2          #include "USART1.H"
+   3          bit data_to_send_ok=0;
+   4          extern  PID PID_PID_2;
+   5          U8 data_to_send[40],FLAG_RETURN;
+   6          void Data_Receive_Anl(U8 *data_buf,U8 num)
+   7          {
+   8   1      
+   9   1      //      S16 rc_value_temp;
+  10   1              U8 sum = 0,i=0;
+  11   1              for( i=0;i<(num-1);i++)sum += *(data_buf+i);
+  12   1              if(!(sum==*(data_buf+num-1)))           return;         //??sum
+  13   1              if(!(*(data_buf)==0xAA && *(data_buf+1)==0xAF))         return;         //????
+  14   1      /////////////////////////////////////////////////////////////////////////////////////
+  15   1              if(*(data_buf+2)==0X01)
+  16   1              {
+  17   2                      if(*(data_buf+4)==0X01);
+  18   2                      if(*(data_buf+4)==0X02);
+  19   2                      if(*(data_buf+4)==0X03);
+  20   2                      if(*(data_buf+2)==0X02)
+  21   2                      {
+  22   3                              if(*(data_buf+4)==0X01)
+  23   3                              {
+  24   4              //                      Send_PID1 = 1;
+  25   4              //                      Send_PID2 = 1;
+  26   4              //                      Send_PID3 = 1;
+  27   4              //                      Send_PID4 = 1;
+  28   4              //                      Send_PID5 = 1;
+  29   4              //                      Send_PID6 = 1;
+  30   4                              }
+  31   3                              if(*(data_buf+4)==0X02);
+  32   3              //                      Send_Offset = 1;
+  33   3                      }
+  34   2              }
+  35   1              if(*(data_buf+2)==0X12)                                                         //PID3
+  36   1              {
+  37   2                              PID_PID_2.Kp = (float)((S16)(*(data_buf+4)<<8)|*(data_buf+5))/100;
+  38   2                              PID_PID_2.Ki = (float)((S16)(*(data_buf+6)<<8)|*(data_buf+7))/100;
+  39   2                              PID_PID_2.Kd = (float)((S16)(*(data_buf+8)<<8)|*(data_buf+9))/100;
+  40   2      //              PID_PID_3.P = (float)((S16)(*(data_buf+10)<<8)|*(data_buf+11))/100;
+  41   2      //                      PID_PID_3.I = (float)((S16)(*(data_buf+12)<<8)|*(data_buf+13))/100;
+  42   2      //              PID_PID_3.D = (float)((S16)(*(data_buf+14)<<8)|*(data_buf+15))/100;
+  43   2      //                      PID_PID_4.P = (float)((S16)(*(data_buf+16)<<8)|*(data_buf+17))/100;
+  44   2      //                      PID_PID_4.I = (float)((S16)(*(data_buf+18)<<8)|*(data_buf+19))/100;
+  45   2      //                      PID_PID_4.D = (float)((S16)(*(data_buf+20)<<8)|*(data_buf+21))/100;
+  46   2              //              Data_Send_Check(sum);
+  47   2              }
+  48   1              if(*(data_buf+2)==0X13)                                                         //PID4
+  49   1              {
+  50   2      //                      PID_PID_5.P = (float)((vs16)(*(data_buf+4)<<8)|*(data_buf+5))/100;
+  51   2      //                      PID_PID_5.I = (float)((vs16)(*(data_buf+6)<<8)|*(data_buf+7))/100;
+  52   2      //                      PID_PID_5.D = (float)((vs16)(*(data_buf+8)<<8)|*(data_buf+9))/100;
+  53   2      //                      PID_PID_6.P = (float)((vs16)(*(data_buf+10)<<8)|*(data_buf+11))/100;
+  54   2      //                      PID_PID_6.I = (float)((vs16)(*(data_buf+12)<<8)|*(data_buf+13))/100;
+C51 COMPILER V9.00   DATA_TRANSFER                                                         06/15/2016 16:36:38 PAGE 2   
+
+  55   2      //                      PID_PID_6.D = (float)((vs16)(*(data_buf+14)<<8)|*(data_buf+15))/100;
+  56   2      //                      PID_PID_7.P = (float)((vs16)(*(data_buf+16)<<8)|*(data_buf+17))/100;
+  57   2      //                      PID_PID_7.I = (float)((vs16)(*(data_buf+18)<<8)|*(data_buf+19))/100;
+  58   2      //                      PID_PID_7.D = (float)((vs16)(*(data_buf+20)<<8)|*(data_buf+21))/100;
+  59   2      //                      Data_Send_Check(sum);
+  60   2              }
+  61   1              if(*(data_buf+2)==0X14)                                                         //PID5
+  62   1              {
+  63   2      //                      PID_PID_8.P = (float)((vs16)(*(data_buf+4)<<8)|*(data_buf+5))/100;
+  64   2      //                      PID_PID_8.I = (float)((vs16)(*(data_buf+6)<<8)|*(data_buf+7))/100;
+  65   2      //                      PID_PID_8.D = (float)((vs16)(*(data_buf+8)<<8)|*(data_buf+9))/100;
+  66   2      //                      PID_PID_9.P = (float)((vs16)(*(data_buf+10)<<8)|*(data_buf+11))/100;
+  67   2      //                      PID_PID_9.I = (float)((vs16)(*(data_buf+12)<<8)|*(data_buf+13))/100;
+  68   2      //                      PID_PID_9.D = (float)((vs16)(*(data_buf+14)<<8)|*(data_buf+15))/100;
+  69   2      //                      PID_PID_10.P = (float)((vs16)(*(data_buf+16)<<8)|*(data_buf+17))/100;
+  70   2      //                      PID_PID_10.I = (float)((vs16)(*(data_buf+18)<<8)|*(data_buf+19))/100;
+  71   2      //                      PID_PID_10.D = (float)((vs16)(*(data_buf+20)<<8)|*(data_buf+21))/100;
+  72   2      //                      Data_Send_Check(sum);
+  73   2              }
+  74   1              if(*(data_buf+2)==0X15)                                                         //PID6
+  75   1              {
+  76   2      //                      PID_PID_11.P = (float)((vs16)(*(data_buf+4)<<8)|*(data_buf+5))/100;
+  77   2      //                      PID_PID_11.I = (float)((vs16)(*(data_buf+6)<<8)|*(data_buf+7))/100;
+  78   2      //                      PID_PID_11.D = (float)((vs16)(*(data_buf+8)<<8)|*(data_buf+9))/100;
+  79   2      //                      PID_PID_12.P = (float)((vs16)(*(data_buf+10)<<8)|*(data_buf+11))/100;
+  80   2      //                      PID_PID_12.I = (float)((vs16)(*(data_buf+12)<<8)|*(data_buf+13))/100;
+  81   2      //                      PID_PID_12.D = (float)((vs16)(*(data_buf+14)<<8)|*(data_buf+15))/100;
+  82   2      //                      Data_Send_Check(sum);
+  83   2      //                      EE_SAVE_PID();
+  84   2              }
+  85   1              if(*(data_buf+2)==0X16)                                                         //OFFSET
+  86   1              {
+  87   2      //                      AngleOffset_Rol = (float)((vs16)(*(data_buf+4)<<8)|*(data_buf+5))/1000;
+  88   2      //                      AngleOffset_Pit = (float)((vs16)(*(data_buf+6)<<8)|*(data_buf+7))/1000;
+  89   2              }
+  90   1                              if(*(data_buf+2)==0X02)                                                         //OFFSET
+  91   1              {
+  92   2      //                      AngleOffset_Rol = (float)((vs16)(*(data_buf+4)<<8)|*(data_buf+5))/1000;
+  93   2      //                      AngleOffset_Pit = (float)((vs16)(*(data_buf+6)<<8)|*(data_buf+7))/1000;
+  94   2                              FLAG_RETURN = 1;
+  95   2      
+  96   2              }
+  97   1              Data_Send_Check(sum);
+  98   1      }
+  99          
+ 100          void Data_Send_Senser(float sv,float pv)
+ 101          {
+ 102   1      
+ 103   1              U8 _cnt=0,i=0,sum=0;
+ 104   1              data_to_send[_cnt++]=0xAA;
+ 105   1              data_to_send[_cnt++]=0xAA;
+ 106   1              data_to_send[_cnt++]=0xF1;
+ 107   1              data_to_send[_cnt++]=0;
+ 108   1              data_to_send[_cnt++]=BYTE0(sv);  //?8?
+ 109   1              data_to_send[_cnt++]=BYTE1(sv);  //?8?
+ 110   1              data_to_send[_cnt++]=BYTE2(sv);  //?8?
+ 111   1              data_to_send[_cnt++]=BYTE3(sv);  //?8?
+ 112   1              data_to_send[_cnt++]=BYTE0(pv);  //?8?
+ 113   1              data_to_send[_cnt++]=BYTE1(pv);  //?8?
+ 114   1              data_to_send[_cnt++]=BYTE2(pv);  //?8?
+ 115   1              data_to_send[_cnt++]=BYTE3(pv);  //?8?
+ 116   1              data_to_send[3] = _cnt-4;
+C51 COMPILER V9.00   DATA_TRANSFER                                                         06/15/2016 16:36:38 PAGE 3   
+
+ 117   1              for( i=0;i<_cnt;i++)sum += data_to_send[i];
+ 118   1              data_to_send[_cnt++] = sum;
+ 119   1              PrintString1(data_to_send,_cnt);
+ 120   1      }
+ 121          void Data_Send_PID2(void){
+ 122   1              unsigned char _cnt=0;
+ 123   1              unsigned int _temp;
+ 124   1              unsigned char sum = 0;
+ 125   1              unsigned char i = 0;
+ 126   1              data_to_send[_cnt++]=0xAA;
+ 127   1              data_to_send[_cnt++]=0xAA;
+ 128   1              data_to_send[_cnt++]=0x12;
+ 129   1              data_to_send[_cnt++]=0;
+ 130   1              _temp = PID_PID_2.Kp * 100;
+ 131   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 132   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 133   1              _temp = PID_PID_2.Ki * 100;
+ 134   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 135   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 136   1              _temp = PID_PID_2.Kd * 100;
+ 137   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 138   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 139   1              _temp = 1* 100 ;
+ 140   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 141   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 142   1              _temp = 0 * 100;
+ 143   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 144   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 145   1              _temp = 0 * 100;
+ 146   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 147   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 148   1              _temp = 0 * 100;
+ 149   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 150   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 151   1              _temp = 0 * 100;
+ 152   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 153   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 154   1              _temp =0 * 100;
+ 155   1              data_to_send[_cnt++]=BYTE0(_temp);
+ 156   1              data_to_send[_cnt++]=BYTE1(_temp);
+ 157   1              data_to_send[3] = _cnt-4;
+ 158   1              for(;i<_cnt;i++)
+ 159   1              sum += data_to_send[i];
+ 160   1              data_to_send[_cnt++]=sum;
+ 161   1              PrintString1(data_to_send,_cnt);
+ 162   1      }
+ 163          void Data_Send_Check(U8 check)
+ 164          {
+ 165   1              U8 sum=0 ,i= 0;
+ 166   1              data_to_send[0]=0xAA;
+ 167   1              data_to_send[1]=0xAA;
+ 168   1              data_to_send[2]=0xF0;
+ 169   1              data_to_send[3]=3;
+ 170   1              data_to_send[4]=0xBA;
+ 171   1              data_to_send[5]=00;
+ 172   1              data_to_send[6]=check;//BYTE0(check);
+ 173   1              for( i=0;i<7;i++)
+ 174   1                      sum += data_to_send[i];
+ 175   1              data_to_send[7]=sum;
+ 176   1        data_to_send_ok=1;
+ 177   1      }
+
+C51 COMPILER V9.00   DATA_TRANSFER                                                         06/15/2016 16:36:38 PAGE 4   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1400    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =     41      17
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
